@@ -239,7 +239,7 @@ NAME                  AGE
 whoami-ingressroute   5s
 ```
 
-#### Verify Basic Auth for \`whoami\` service
+### Verify Basic Auth for \`whoami\` service
 
 **No credentials — expect `401 Unauthorized`:**
 
@@ -452,7 +452,7 @@ httpbin-ingressroute   7s
 whoami-ingressroute    3m32s
 ```
 
-#### Verify  rate limiting on httpbin
+### Verify  rate limiting on httpbin service:
 
 1. Send a Single request :
 
