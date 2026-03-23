@@ -71,7 +71,7 @@ traefik-865bd56545-8wlrl                  1/1     Running     0          41ss
 echo "127.0.0.1 whoami.localhost" | sudo tee -a /etc/hosts
 ```
 
-3. Deploy whoami
+3. Deploy `whoami service:`
 
 Save the following as `01-whoami-deployment.yaml`:
 
@@ -196,7 +196,7 @@ NAME         AGE
 basic-auth   6s
 ```
 
-5\. Create the IngressRoute for whoami
+5\. Create the IngressRoute for `whoami service.`
 
 Save the following as `04-whoami-ingressroute.yaml`:
 
@@ -232,7 +232,7 @@ Verify the IngressRoute is created:
 kubectl get ingressroute
 ```
 
-Expected output:
+Output is similar to:
 
 ```
 NAME                  AGE
@@ -241,28 +241,77 @@ whoami-ingressroute   5s
 
 ### Verify Basic Auth for \`whoami\` service
 
-**No credentials — expect `401 Unauthorized`:**
+1. Access the `whoami` service with no credentials:
 
 ```bash
 curl -v http://whoami.localhost
 ```
 
-**Wrong password — expect `401 Unauthorized`:**
+Output is similar to:
+
+```
+* Host whoami.localhost:80 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:80...
+* Connected to whoami.localhost (::1) port 80
+> GET / HTTP/1.1
+> Host: whoami.localhost
+> User-Agent: curl/8.6.0
+> Accept: */*
+> 
+< HTTP/1.1 401 Unauthorized
+< Content-Type: text/plain
+< Www-Authenticate: Basic realm="traefik"
+< Date: Mon, 23 Mar 2026 12:31:12 GMT
+< Content-Length: 17
+< 
+401 Unauthorized
+* Connection #0 to host whoami.localhost left intact
+```
+
+2. Access the `whoami` service with wrong password:
 
 ```bash
 curl -v -u admin:wrongpassword http://whoami.localhost
 ```
 
-**Correct credentials — expect `200 OK`:**
+Output is similar to:
+
+```
+* Host whoami.localhost:80 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:80...
+* Connected to whoami.localhost (::1) port 80
+* Server auth using Basic with user 'admin'
+> GET / HTTP/1.1
+> Host: whoami.localhost
+> Authorization: Basic YWRtaW46d3JvbmdwYXNzd29yZA==
+> User-Agent: curl/8.6.0
+> Accept: */*
+> 
+< HTTP/1.1 401 Unauthorized
+< Content-Type: text/plain
+* Authentication problem. Ignoring this.
+< Www-Authenticate: Basic realm="traefik"
+< Date: Mon, 23 Mar 2026 12:31:24 GMT
+< Content-Length: 17
+< 
+401 Unauthorized
+* Connection #0 to host whoami.localhost left intact
+```
+
+3. Access the `whoami` service with correct credentials. If you used a different password, then ensure that you replace `admin123` with the credentials that you set when creating the basic auth password.
 
 ```bash
 curl -v -u admin:admin123 http://whoami.localhost
 ```
 
-A successful response looks like this:
+Output is similar to:
 
 ```
-H* Host whoami.localhost:80 was resolved.
+* Host whoami.localhost:80 was resolved.
 * IPv6: ::1
 * IPv4: 127.0.0.1
 *   Trying [::1]:80...
@@ -299,6 +348,7 @@ X-Forwarded-Server: traefik-865bd56545-8wlrl
 X-Real-Ip: 10.42.0.1
 
 * Connection #0 to host whoami.localhost left intact
+
 ```
 
 This confirms, `whoami` is running on k3d and protected by basic auth.
@@ -400,7 +450,7 @@ Verify both middlewares are present:
 kubectl get middleware
 ```
 
-Expected output:
+Output is similar to:
 
 ```
 NAME         AGE
@@ -458,6 +508,67 @@ whoami-ingressroute    3m32s
 
 ```bash
 curl -v http://httpbin.localhost/get
+```
+
+Output is similar to:
+
+```
+* Host httpbin.localhost:80 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:80...
+* Connected to httpbin.localhost (::1) port 80
+> GET /get HTTP/1.1
+> Host: httpbin.localhost
+> User-Agent: curl/8.6.0
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Access-Control-Allow-Credentials: true
+< Access-Control-Allow-Origin: *
+< Content-Length: 606
+< Content-Type: application/json; charset=utf-8
+< Date: Mon, 23 Mar 2026 12:34:52 GMT
+< 
+{
+  "args": {},
+  "headers": {
+    "Accept": [
+      "*/*"
+    ],
+    "Accept-Encoding": [
+      "gzip"
+    ],
+    "Host": [
+      "httpbin.localhost"
+    ],
+    "User-Agent": [
+      "curl/8.6.0"
+    ],
+    "X-Forwarded-For": [
+      "10.42.0.1"
+    ],
+    "X-Forwarded-Host": [
+      "httpbin.localhost"
+    ],
+    "X-Forwarded-Port": [
+      "80"
+    ],
+    "X-Forwarded-Proto": [
+      "http"
+    ],
+    "X-Forwarded-Server": [
+      "traefik-865bd56545-8wlrl"
+    ],
+    "X-Real-Ip": [
+      "10.42.0.1"
+    ]
+  },
+  "method": "GET",
+  "origin": "10.42.0.1",
+  "url": "http://httpbin.localhost/get"
+}
+* Connection #0 to host httpbin.localhost left intact
 ```
 
 2. Burst test  by sending 15 rapid requests and watch for `429`:

@@ -160,9 +160,8 @@ curl -v -u admin:admin123 http://localhost
 
 Output is similar to:
 
-```
-* Host localhost:80 was resolved.
-* IPv6: ::1
+<pre><code><strong>* Host localhost:80 was resolved.
+</strong>* IPv6: ::1
 * IPv4: 127.0.0.1
 *   Trying [::1]:80...
 * Connected to localhost (::1) port 80
@@ -173,11 +172,11 @@ Output is similar to:
 > User-Agent: curl/8.6.0
 > Accept: */*
 > 
-< HTTP/1.1 200 OK
-< Content-Length: 389
-< Content-Type: text/plain; charset=utf-8
-< Date: Mon, 23 Mar 2026 09:46:05 GMT
-< 
+&#x3C; HTTP/1.1 200 OK
+&#x3C; Content-Length: 389
+&#x3C; Content-Type: text/plain; charset=utf-8
+&#x3C; Date: Mon, 23 Mar 2026 09:46:05 GMT
+&#x3C; 
 Hostname: 0a90889dacea
 IP: 127.0.0.1
 IP: ::1
@@ -197,7 +196,7 @@ X-Forwarded-Server: 5d30cc46a1f6
 X-Real-Ip: 172.19.0.1
 
 * Connection #0 to host localhost left intact
-```
+</code></pre>
 
 #### **Confirm in the Traefik dashboard**
 
