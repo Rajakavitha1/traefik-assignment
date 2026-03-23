@@ -4,12 +4,10 @@ description: Learn about how the various core concepts of Traefik work together 
 
 # Docker
 
-This guide is split into two parts:
+In this guide learn to :&#x20;
 
-* **Part 1** — Deploy Traefik and `whoami` with basic auth
-* **Part 2** — Add `httpbin` with rate limiting to the running stack
-
-***
+1. Deploy Traefik and `whoami` with basic auth
+2. Add `httpbin` with rate limiting to the running stack
 
 ### Prerequisites
 
@@ -17,11 +15,10 @@ This guide is split into two parts:
 * [Docker Compose](https://docs.docker.com/compose/install/) installed
 * `curl` available in your terminal
 
-***
+### Deploy Traefik whoami with Basic Auth
 
-### Part 1: whoami with Basic Auth
-
-#### Step 1: Generate a Basic Auth Password
+1. Generate a Basic Auth Password
+2. Generate a Basic Auth password
 
 Run this command to generate a bcrypt hash for user `admin` with password `admin123`:
 
@@ -34,19 +31,17 @@ echo $(htpasswd -nB admin) | sed -e s/\\$/\\$\\$/g
 > * Linux: `sudo apt-get install apache2-utils`
 > * macOS: `brew install httpd`
 
-Copy the output — you will paste it into the compose file in the next step.
+Copy the output and save it. You need this for the Docker compose file .
 
-***
+Copy the output and save it . You need this when you create the compose file.
 
-#### Step 2: Create the Docker Compose file
+2. Create the Docker Compose file
 
 Create a new directory and save the following as `docker-compose.yml`.
 
-Replace `<YOUR_HASH>` with the output from Step 1.
+Replace `<YOUR_HASH>` with the output from generate Basic Auth passwaord.
 
 ```yaml
-version: '3.8'
-
 services:
   traefik:
     image: traefik:v3.0
@@ -72,15 +67,14 @@ services:
       - "traefik.http.routers.whoami.middlewares=secure-gate"
 ```
 
-***
-
-#### Step 3: Start the stack
+3. Start the stack
+4. Start the stack
 
 ```bash
 docker compose up -d
 ```
 
-Verify both containers are running:
+4. Verify both containers are running:
 
 ```bash
 docker compose ps
@@ -94,9 +88,12 @@ your-dir-traefik-1  traefik    running   0.0.0.0:80->80/tcp, 0.0.0.0:8080->8080/
 your-dir-whoami-1   whoami     running
 ```
 
-***
+4. Test basic auth on whoami using:
 
-#### Step 4: Test basic auth on whoami
+* curl
+* dashboard
+
+#### Test basic auth on whoami
 
 **No credentials — expect `401 Unauthorized`:**
 
@@ -127,9 +124,7 @@ X-Forwarded-For: 172.18.0.1
 ...
 ```
 
-***
-
-#### Step 5: Confirm in the Traefik dashboard
+Confirm in the Traefik dashboard
 
 Open your browser and go to:
 
@@ -139,26 +134,19 @@ http://localhost:8080/dashboard/
 
 Go to **HTTP → Middlewares** and confirm `secure-gate` is listed and attached to the `whoami` router.
 
-✅ **Part 1 complete.** whoami is running and protected by basic auth.
+This confirms that `whoami` is running and protected by basic auth.
 
-***
-
-***
-
-### Part 2: Add httpbin with Rate Limiting
+### Deploy  httpbin with Rate Limiting
 
 No need to tear down. You will add `httpbin` to the running stack.
 
-***
-
-#### Step 6: Update docker-compose.yml
+1\. Update docker-compose.yml
 
 Add the `limit-gate` middleware to the Traefik labels and append the `httpbin` service.
 
 Your updated `docker-compose.yml` should look like this:
 
 ```yaml
-version: '3.8'
 
 services:
   traefik:
@@ -197,11 +185,11 @@ services:
       - "traefik.http.routers.httpbin.middlewares=limit-gate"
 ```
 
-***
+2\. Apply the changes
 
-#### Step 7: Apply the changes
+2. Apply the changes
 
-Docker Compose will only create the new `httpbin` container and update Traefik labels — `whoami` is untouched:
+Docker Compose only creates the new `httpbin` container and update Traefik labels and `whoami` is untouched:
 
 ```bash
 docker compose up -d
@@ -222,9 +210,9 @@ your-dir-whoami-1    whoami     running
 your-dir-httpbin-1   httpbin    running
 ```
 
-***
+#### Test rate limiting on httpbin
 
-#### Step 8: Test rate limiting on httpbin
+3. Test rate limiting on httpbin
 
 **Single request — expect `200 OK`:**
 
@@ -253,9 +241,7 @@ Request 12: 429
 Request 15: 429
 ```
 
-***
-
-#### Step 9: Confirm whoami still works
+#### Confirm whoami still works
 
 Make sure adding httpbin did not affect whoami:
 
@@ -265,28 +251,19 @@ curl -v -u admin:admin123 http://localhost
 
 Should still return `200 OK` with the whoami response.
 
-***
 
-#### Step 10: Confirm in the Traefik dashboard
+
+4. Confirm in the Traefik dashboard
+
+#### Confirm in the Traefik dashboard
 
 Go back to `http://localhost:8080/dashboard/` → **HTTP → Middlewares**.
 
 You should now see both middlewares:
 
-| Middleware    | Type       | Applied to |
-| ------------- | ---------- | ---------- |
-| `secure-gate` | Basic Auth | `whoami`   |
-| `limit-gate`  | Rate Limit | `httpbin`  |
-
-✅ **Part 2 complete.** httpbin is running and protected by rate limiting.
+This confirms that httpbin is running and protected by rate limiting.
 
 ***
-
-### Tear down
-
-```bash
-docker compose down
-```
 
 ***
 
