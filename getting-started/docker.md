@@ -9,7 +9,7 @@ In this guide learn to :&#x20;
 1. Deploy Traefik and `whoami` with basic auth
 2. Add `httpbin` with rate limiting to the running stack
 
-### Prerequisites
+### Before you begin
 
 * [Docker](https://docs.docker.com/get-docker/) installed
 * [Docker Compose](https://docs.docker.com/compose/install/) installed
