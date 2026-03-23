@@ -138,7 +138,7 @@ No need to tear down. You will add `httpbin` to the running stack.
 
 1\. Update docker-compose.yml
 
-Add the `limit-gate` middleware to the Traefik labels and append the `httpbin` service. Ensure that you still have the same `<YOUR_HASH>` with the output from generate Basic Auth password.
+Add the `limit-gate` middleware to the Traefik _labels_ and append the `httpbin` service. Ensure that you still have the same `<YOUR_HASH>` with the output from generate Basic Auth password.
 
 Your updated `docker-compose.yml` should look like this:
 
