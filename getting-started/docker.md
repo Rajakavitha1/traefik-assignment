@@ -76,12 +76,12 @@ docker compose up -d
 docker compose ps
 ```
 
-Expected output:
+Output is similar to:
 
 ```
-NAME                SERVICE    STATUS    PORTS
-your-dir-traefik-1  traefik    running   0.0.0.0:80->80/tcp, 0.0.0.0:8080->8080/tcp
-your-dir-whoami-1   whoami     running
+NAME                IMAGE            COMMAND                  SERVICE   CREATED         STATUS         PORTS
+traefik-traefik-1   traefik:v3.0     "/entrypoint.sh --ap…"   traefik   8 seconds ago   Up 8 seconds   0.0.0.0:80->80/tcp, 0.0.0.0:8080->8080/tcp
+traefik-whoami-1    traefik/whoami   "/whoami"                whoami    8 seconds ago   Up 8 seconds   80/tcp
 ```
 
 ### Verify that the whoami service works with basic auth
