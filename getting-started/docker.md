@@ -182,10 +182,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.httpbin.rule=Host(`httpbin.localhost`)"
       - "traefik.http.routers.httpbin.entrypoints=web"
-      - "traefik.http.routers.httpbin.middlewares=limit-gate"
+      - "traefik.http.routers.httpbin.middlewares=limit-gate"Apply the changes
 ```
-
-2\. Apply the changes
 
 2. Apply the changes
 
