@@ -60,13 +60,13 @@ Output is similar to:
 traefik-xxx   1/1   Running   0   60s
 ```
 
-#### Step 2: Add whoami.localhost to /etc/hosts
+2\. Add whoami.localhost to /etc/hosts
 
 ```bash
 echo "127.0.0.1 whoami.localhost" | sudo tee -a /etc/hosts
 ```
 
-3: Deploy whoami
+3. Deploy whoami
 
 Save the following as `01-whoami-deployment.yaml`:
 
@@ -266,9 +266,9 @@ X-Forwarded-Host: whoami.localhost
 ...
 ```
 
-✅ **Part 1 complete.** `whoami` is running on k3d and protected by basic auth.
+This confirms, `whoami` is running on k3d and protected by basic auth.
 
-### Part 2: httpbin with Rate Limiting
+### Deploy httpbin with Rate Limiting
 
 No teardown needed. You will add `httpbin` to the running cluster.
 
