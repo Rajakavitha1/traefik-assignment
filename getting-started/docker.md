@@ -84,26 +84,26 @@ your-dir-traefik-1  traefik    running   0.0.0.0:80->80/tcp, 0.0.0.0:8080->8080/
 your-dir-whoami-1   whoami     running
 ```
 
-4. Test basic auth on whoami using:
+#### Verify that the whoami service works with basic auth
 
 * curl
 * dashboard
 
-#### Test basic auth on whoami
+**Confirm using curl**
 
-**No credentials — expect `401 Unauthorized`:**
+No credentials — expect `401 Unauthorized`:
 
 ```bash
 curl -v http://localhost
 ```
 
-**Wrong password — expect `401 Unauthorized`:**
+Wrong password — expect `401 Unauthorized`:
 
 ```bash
 curl -v -u admin:wrongpassword http://localhost
 ```
 
-**Correct credentials — expect `200 OK`:**
+Correct credentials — expect `200 OK`:
 
 ```bash
 curl -v -u admin:admin123 http://localhost
@@ -120,9 +120,9 @@ X-Forwarded-For: 172.18.0.1
 ...
 ```
 
-Confirm in the Traefik dashboard
+**Confirm in the Traefik dashboard**
 
-Open your browser and go to:
+1. Open your browser and go to:
 
 ```
 http://localhost:8080/dashboard/
@@ -204,17 +204,20 @@ your-dir-whoami-1    whoami     running
 your-dir-httpbin-1   httpbin    running
 ```
 
-#### Test rate limiting on httpbin
+#### Verify that rate limiting works on httpbin
 
-3. Test rate limiting on httpbin
+* curl
+* dashboard
 
-**Single request — expect `200 OK`:**
+Confirm using curl
+
+Single request — expect `200 OK`:
 
 ```bash
 curl -v http://httpbin.localhost/get
 ```
 
-**Burst test — fire 15 rapid requests and watch for `429`:**
+Burst test — fire 15 rapid requests and watch for `429`:
 
 ```bash
 for i in $(seq 1 15); do
@@ -235,20 +238,6 @@ Request 12: 429
 Request 15: 429
 ```
 
-#### Confirm whoami still works
-
-Make sure adding httpbin did not affect whoami:
-
-```bash
-curl -v -u admin:admin123 http://localhost
-```
-
-Should still return `200 OK` with the whoami response.
-
-
-
-4. Confirm in the Traefik dashboard
-
 #### Confirm in the Traefik dashboard
 
 Go back to `http://localhost:8080/dashboard/` → **HTTP → Middlewares**.
@@ -256,10 +245,6 @@ Go back to `http://localhost:8080/dashboard/` → **HTTP → Middlewares**.
 You should now see both middlewares:
 
 This confirms that httpbin is running and protected by rate limiting.
-
-***
-
-***
 
 ### Summary
 
