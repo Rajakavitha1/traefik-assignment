@@ -21,7 +21,7 @@ In this guide learn to :&#x20;
 
 1. Generate a Basic Auth password
 
-Run this command to generate a bcrypt hash for user `admin` with password `admin123`:
+Run this command to generate a bcrypt hash for user `admin` and set the  password as `admin123`  when prompted:
 
 ```bash
 echo $(htpasswd -nB admin) | sed -e s/\\$/\\$\\$/g
@@ -89,33 +89,112 @@ You can confirm that the whoami service works with basic auth using curl or the 
 
 #### Confirm using curl
 
-No credentials — expect `401 Unauthorized`:
+1. Access the `whoami` service with no credentials:
 
 ```bash
 curl -v http://localhost
 ```
 
-Wrong password — expect `401 Unauthorized`:
+Output is similar to:
+
+```
+* Host localhost:80 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+> GET / HTTP/1.1
+> Host: localhost
+> User-Agent: curl/8.6.0
+> Accept: */*
+> 
+< HTTP/1.1 401 Unauthorized
+< Content-Type: text/plain
+< Www-Authenticate: Basic realm="traefik"
+< Date: Mon, 23 Mar 2026 09:44:27 GMT
+< Content-Length: 17
+< 
+401 Unauthorized
+* Connection #0 to host localhost left intact
+```
+
+2. Access the `whoami` service with wrong password:
 
 ```bash
 curl -v -u admin:wrongpassword http://localhost
 ```
 
-Correct credentials — expect `200 OK`:
+Output is simialr to:
+
+```
+* Host localhost:80 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+* Server auth using Basic with user 'admin'
+> GET / HTTP/1.1
+> Host: localhost
+> Authorization: Basic YWRtaW46d3JvbmdwYXNzd29yZA==
+> User-Agent: curl/8.6.0
+> Accept: */*
+> 
+< HTTP/1.1 401 Unauthorized
+< Content-Type: text/plain
+* Authentication problem. Ignoring this.
+< Www-Authenticate: Basic realm="traefik"
+< Date: Mon, 23 Mar 2026 09:45:00 GMT
+< Content-Length: 17
+< 
+401 Unauthorized
+* Connection #0 to host localhost left intact
+```
+
+3. Access the `whoami` service with correct credentials. If you used a different password, then ensure that you replace `admin123` with the credentials that you set when creating the basic auth password.
 
 ```bash
 curl -v -u admin:admin123 http://localhost
 ```
 
-A successful response looks like this:
+Output is similar to:
 
 ```
-Hostname: 3f4a2b1c
-IP: 172.18.0.3
+* Host localhost:80 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+* Server auth using Basic with user 'admin'
+> GET / HTTP/1.1
+> Host: localhost
+> Authorization: Basic YWRtaW46YWRtaW4xMjM=
+> User-Agent: curl/8.6.0
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Content-Length: 389
+< Content-Type: text/plain; charset=utf-8
+< Date: Mon, 23 Mar 2026 09:46:05 GMT
+< 
+Hostname: 0a90889dacea
+IP: 127.0.0.1
+IP: ::1
+IP: 172.19.0.2
+RemoteAddr: 172.19.0.3:47198
 GET / HTTP/1.1
 Host: localhost
-X-Forwarded-For: 172.18.0.1
-...
+User-Agent: curl/8.6.0
+Accept: */*
+Accept-Encoding: gzip
+Authorization: Basic YWRtaW46YWRtaW4xMjM=
+X-Forwarded-For: 172.19.0.1
+X-Forwarded-Host: localhost
+X-Forwarded-Port: 80
+X-Forwarded-Proto: http
+X-Forwarded-Server: 5d30cc46a1f6
+X-Real-Ip: 172.19.0.1
+
+* Connection #0 to host localhost left intact
 ```
 
 #### **Confirm in the Traefik dashboard**
@@ -126,13 +205,15 @@ Open your browser and go to:
 http://localhost:8080/dashboard/
 ```
 
-Go to **HTTP → Middlewares** and confirm `secure-gate` is listed and attached to the `whoami` router.
+Go to **HTTP > HTTP Middlewares** and click **secure-gate@docker** confirm that it is attached to the `whoami` router.
+
+<figure><img src="../.gitbook/assets/docker-dashboard.png" alt=""><figcaption></figcaption></figure>
 
 This confirms that `whoami` is running and protected by basic auth.
 
 ### Deploy  httpbin with Rate Limiting
 
-No need to tear down. You will add `httpbin` to the running stack.
+Now add `httpbin` to the running stack.
 
 1\. Update docker-compose.yml
 
