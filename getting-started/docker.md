@@ -17,8 +17,7 @@ In this guide learn to :&#x20;
 
 ### Deploy Traefik whoami with Basic Auth
 
-1. Generate a Basic Auth Password
-2. Generate a Basic Auth password
+1. Generate a Basic Auth password
 
 Run this command to generate a bcrypt hash for user `admin` with password `admin123`:
 
@@ -37,9 +36,7 @@ Copy the output and save it . You need this when you create the compose file.
 
 2. Create the Docker Compose file
 
-Create a new directory and save the following as `docker-compose.yml`.
-
-Replace `<YOUR_HASH>` with the output from generate Basic Auth passwaord.
+Create a new directory and save the following as `docker-compose.yml`. Ensure that you replace `<YOUR_HASH>` with the output from generate Basic Auth password.
 
 ```yaml
 services:
@@ -68,7 +65,6 @@ services:
 ```
 
 3. Start the stack
-4. Start the stack
 
 ```bash
 docker compose up -d
