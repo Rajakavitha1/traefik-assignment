@@ -6,10 +6,10 @@ description: Learn about how the various core concepts of Traefik work together 
 
 In this guide learn to :&#x20;
 
-1. Deploy Traefik and `whoami` with basic auth
-2. Verify that Traefik ensures that `whoami` works with basic auth
-3. Add `httpbin` with rate limiting to the running stack
-4. Verify that Traefik sets rate limiting for `httpbin`  service
+1. [Deploy Traefik and `whoami` with basic auth](docker.md#deploy-traefik-whoami-with-basic-auth)
+2. [Verify that Traefik adds authentication for the `whoami` service](docker.md#verify-that-the-whoami-service-works-with-basic-auth)
+3. [Add `httpbin` with rate limiting to the running stack](docker.md#deploy-httpbin-with-rate-limiting)
+4. [Verify that Traefik sets rate limiting for `httpbin`  service](docker.md#verify-that-rate-limiting-works-on-httpbin)
 
 ### Before you begin
 
