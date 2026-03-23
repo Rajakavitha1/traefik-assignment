@@ -1,13 +1,17 @@
+---
+description: >-
+  Learn about how the various core concepts of Traefik work together in
+  Kubernetes
+---
+
 # Kubernetes
 
-This guide walks you through deploying two services on a k3d cluster using Traefik's native `IngressRoute` CRD:
+Learn how to use Traefik's native **IngressRoute CRD** to manage traffic in a Kubernetes cluster:
 
-* **Part 1** — Deploy `whoami` protected by basic auth
-* **Part 2** — Add `httpbin` protected by rate limiting
+1. &#x20;Deploy `whoami` protected by basic auth
+2. Add `httpbin` protected by rate limiting
 
-Each part builds on the previous one. Nothing is torn down between parts.
-
-### Prerequisites
+### Before you begin
 
 * [Docker](https://docs.docker.com/get-docker/) installed
 * [k3d](https://k3d.io/#installation) installed
@@ -19,9 +23,7 @@ Each part builds on the previous one. Nothing is torn down between parts.
 > * Linux: `sudo apt-get install apache2-utils`
 > * macOS: `brew install httpd`
 
-***
-
-### Part 1: whoami with Basic Auth
+### Deploy Traefik whoami with Basic Auth
 
 1. Create a k3d cluster
 

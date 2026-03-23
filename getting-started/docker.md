@@ -273,7 +273,7 @@ Verify all three containers are now running:
 docker compose ps
 ```
 
-Expected output:
+Output is similar to:
 
 ```
 NAME                IMAGE                  COMMAND                  SERVICE   CREATED          STATUS          PORTS
