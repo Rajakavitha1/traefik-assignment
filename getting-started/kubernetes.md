@@ -45,8 +45,8 @@ kubectl get nodes
 Output is similar to:
 
 ```
-NAME                        STATUS   ROLES                  AGE
-k3d-traefik-demo-server-0   Ready    control-plane,master   30s
+NAME                        STATUS   ROLES                  AGE   VERSION
+k3d-traefik-demo-server-0   Ready    control-plane,master   15s   v1.33.6+k3s1
 ```
 
 Verify Traefik is running . k3d ships with Traefik by default:
@@ -58,7 +58,10 @@ kubectl get pods -n kube-system | grep traefik
 Output is similar to:
 
 ```
-traefik-xxx   1/1   Running   0   60s
+helm-install-traefik-c5g4t                0/1     Completed   1          91s
+helm-install-traefik-crd-mlxqc            0/1     Completed   0          91s
+svclb-traefik-95f1b584-h9jwt              2/2     Running     0          41s
+traefik-865bd56545-8wlrl                  1/1     Running     0          41s
 ```
 
 2\. Add whoami.localhost to /etc/hosts
@@ -121,8 +124,8 @@ kubectl get pods
 Output is similar to:
 
 ```
-NAME                      READY   STATUS    RESTARTS
-whoami-xxx                1/1     Running   0
+NAME                      READY   STATUS    RESTARTS   AGE
+whoami-64f6cf779d-kgztc   1/1     Running   0          20s
 ```
 
 4. Create the Basic Auth secret
@@ -189,7 +192,7 @@ Output is similar to:
 
 ```
 NAME         AGE
-basic-auth   5s
+basic-auth   6s
 ```
 
 5\. Create the IngressRoute for whoami
@@ -258,13 +261,43 @@ curl -v -u admin:admin123 http://whoami.localhost
 A successful response looks like this:
 
 ```
-Hostname: whoami-xxx
-IP: 10.42.0.5
+H* Host whoami.localhost:80 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:80...
+* Connected to whoami.localhost (::1) port 80
+* Server auth using Basic with user 'admin'
+> GET / HTTP/1.1
+> Host: whoami.localhost
+> Authorization: Basic YWRtaW46YWRtaW4xMjM=
+> User-Agent: curl/8.6.0
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Content-Length: 452
+< Content-Type: text/plain; charset=utf-8
+< Date: Mon, 23 Mar 2026 12:31:31 GMT
+< 
+Hostname: whoami-64f6cf779d-kgztc
+IP: 127.0.0.1
+IP: ::1
+IP: 10.42.0.9
+IP: fe80::b44c:f1ff:fe51:dc58
+RemoteAddr: 10.42.0.8:56228
 GET / HTTP/1.1
 Host: whoami.localhost
+User-Agent: curl/8.6.0
+Accept: */*
+Accept-Encoding: gzip
+Authorization: Basic YWRtaW46YWRtaW4xMjM=
 X-Forwarded-For: 10.42.0.1
 X-Forwarded-Host: whoami.localhost
-...
+X-Forwarded-Port: 80
+X-Forwarded-Proto: http
+X-Forwarded-Server: traefik-865bd56545-8wlrl
+X-Real-Ip: 10.42.0.1
+
+* Connection #0 to host whoami.localhost left intact
 ```
 
 This confirms, `whoami` is running on k3d and protected by basic auth.
@@ -330,12 +363,12 @@ Verify both pods are running:
 kubectl get pods
 ```
 
-Expected output:
+Output is similar to:
 
 ```
-NAME                      READY   STATUS    RESTARTS
-whoami-xxx                1/1     Running   0
-httpbin-xxx               1/1     Running   0
+NAME                       READY   STATUS    RESTARTS   AGE
+httpbin-57956b77c7-m6t6c   1/1     Running   0          13s
+whoami-64f6cf779d-kgztc    1/1     Running   0          5m41s
 ```
 
 3\. Create the Rate Limit middleware
@@ -410,12 +443,12 @@ Verify both IngressRoutes are present:
 kubectl get ingressroute
 ```
 
-Expected output:
+Output is similar to:
 
 ```
 NAME                   AGE
-whoami-ingressroute    10m
-httpbin-ingressroute   5s
+httpbin-ingressroute   7s
+whoami-ingressroute    3m32s
 ```
 
 5\. Test rate limiting on httpbin
@@ -441,23 +474,19 @@ Expected output:
 Request 1: 200
 Request 2: 200
 Request 3: 200
-...
+Request 4: 200
+Request 5: 200
+Request 6: 200
+Request 7: 200
+Request 8: 200
+Request 9: 200
+Request 10: 200
 Request 11: 429
 Request 12: 429
 Request 13: 429
 Request 14: 429
-Request 15: 429
+Request 15: 200
 ```
-
-6\. Confirm whoami is unaffected
-
-```bash
-curl -v -u admin:admin123 http://whoami.localhost
-```
-
-Should still return `200 OK`.
-
-`httpbin` is running and protected by rate limiting.
 
 ### Tear down
 
