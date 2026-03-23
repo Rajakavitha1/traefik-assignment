@@ -229,7 +229,6 @@ services:
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
     ports:
       - "80:80"
@@ -277,10 +276,10 @@ docker compose ps
 Expected output:
 
 ```
-NAME                 SERVICE    STATUS    PORTS
-your-dir-traefik-1   traefik    running   0.0.0.0:80->80/tcp, 0.0.0.0:8080->8080/tcp
-your-dir-whoami-1    whoami     running
-your-dir-httpbin-1   httpbin    running
+NAME                IMAGE                  COMMAND                  SERVICE   CREATED          STATUS          PORTS
+traefik-httpbin-1   mccutchen/go-httpbin   "/bin/go-httpbin"        httpbin   26 seconds ago   Up 25 seconds   8080/tcp
+traefik-traefik-1   traefik:v3.0           "/entrypoint.sh --ap…"   traefik   26 seconds ago   Up 25 seconds   0.0.0.0:80->80/tcp, 0.0.0.0:8080->8080/tcp
+traefik-whoami-1    traefik/whoami         "/whoami"                whoami    53 minutes ago   Up 53 minutes   80/tcp
 ```
 
 ### Verify that rate limiting works on httpbin
@@ -289,13 +288,74 @@ You can confirm that the ratelimiting works on `httpbin` using curl or the dashb
 
 #### Confirm using curl
 
-Single request — expect `200 OK`:
+1. Send a single request:
 
 ```bash
 curl -v http://httpbin.localhost/get
 ```
 
-Burst test  by sending 15 rapid requests and watch for `429`:
+Output is similar to:
+
+```
+* Host httpbin.localhost:80 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:80...
+* Connected to httpbin.localhost (::1) port 80
+> GET /get HTTP/1.1
+> Host: httpbin.localhost
+> User-Agent: curl/8.6.0
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Access-Control-Allow-Credentials: true
+< Access-Control-Allow-Origin: *
+< Content-Length: 597
+< Content-Type: application/json; charset=utf-8
+< Date: Mon, 23 Mar 2026 10:19:13 GMT
+< 
+{
+  "args": {},
+  "headers": {
+    "Accept": [
+      "*/*"
+    ],
+    "Accept-Encoding": [
+      "gzip"
+    ],
+    "Host": [
+      "httpbin.localhost"
+    ],
+    "User-Agent": [
+      "curl/8.6.0"
+    ],
+    "X-Forwarded-For": [
+      "172.19.0.1"
+    ],
+    "X-Forwarded-Host": [
+      "httpbin.localhost"
+    ],
+    "X-Forwarded-Port": [
+      "80"
+    ],
+    "X-Forwarded-Proto": [
+      "http"
+    ],
+    "X-Forwarded-Server": [
+      "3caa64c9cfff"
+    ],
+    "X-Real-Ip": [
+      "172.19.0.1"
+    ]
+  },
+  "method": "GET",
+  "origin": "172.19.0.1",
+  "url": "http://httpbin.localhost/get"
+}
+* Connection #0 to host httpbin.localhost left intact
+```
+
+2. Burst test  by sending 15 rapid requests and watch for `429`:
 
 ```bash
 for i in $(seq 1 15); do
@@ -304,30 +364,32 @@ for i in $(seq 1 15); do
 done
 ```
 
-Expected output:
+Output is similar to:
 
 ```
 Request 1: 200
 Request 2: 200
-...
+Request 3: 200
+Request 4: 200
+Request 5: 200
+Request 6: 200
+Request 7: 200
+Request 8: 200
+Request 9: 200
+Request 10: 200
 Request 11: 429
-Request 12: 429
-...
+Request 12: 200
+Request 13: 429
+Request 14: 429
 Request 15: 429
 ```
 
 #### Confirm in the Traefik dashboard
 
-Go back to `http://localhost:8080/dashboard/` → **HTTP → Middlewares**.
+Go back to `http://localhost:8080/dashboard/` → **HTTP → HTTP Middlewares**.
 
-You should now see both middlewares:
+You should now see both middlewares.
 
-This confirms that httpbin is running and protected by rate limiting.
+<figure><img src="../.gitbook/assets/docker-dashboard1.png" alt=""><figcaption></figcaption></figure>
 
-### Summary
-
-| Service           | URL                                | Protection                        |
-| ----------------- | ---------------------------------- | --------------------------------- |
-| `whoami`          | `http://localhost`                 | Basic auth (`admin` / `admin123`) |
-| `httpbin`         | `http://httpbin.localhost/get`     | Rate limit (5 req/s, burst 10)    |
-| Traefik dashboard | `http://localhost:8080/dashboard/` | None (insecure mode)              |
+This confirms that `httpbin` is running and protected by rate limiting.
