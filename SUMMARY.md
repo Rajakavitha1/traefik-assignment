@@ -6,7 +6,6 @@
 
 * [Docker](getting-started/docker.md)
 * [Kubernetes](getting-started/kubernetes.md)
-* [Publish your docs](getting-started/publish-your-docs.md)
 
 ## Basics
 
