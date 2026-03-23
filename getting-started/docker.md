@@ -386,7 +386,7 @@ Request 15: 429
 
 #### Confirm in the Traefik dashboard
 
-Go back to `http://localhost:8080/dashboard/` → **HTTP → HTTP Middlewares**.
+In the browser `http://localhost:8080/dashboard/` go to **HTTP > HTTP Middlewares**.
 
 You should now see both middlewares.
 
