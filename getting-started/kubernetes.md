@@ -16,7 +16,6 @@ Learn how to use Traefik's native **IngressRoute CRD** to manage traffic in a Ku
 * [Docker](https://docs.docker.com/get-docker/) installed
 * [k3d](https://k3d.io/#installation) installed
 * [kubectl](https://kubernetes.io/docs/tasks/tools/) installed
-* [helm](https://helm.sh/docs/intro/install/) installed
 * `curl` and `htpasswd` available in your terminal
 
 > **Install htpasswd if missing:**
@@ -61,7 +60,7 @@ Output is similar to:
 helm-install-traefik-c5g4t                0/1     Completed   1          91s
 helm-install-traefik-crd-mlxqc            0/1     Completed   0          91s
 svclb-traefik-95f1b584-h9jwt              2/2     Running     0          41s
-traefik-865bd56545-8wlrl                  1/1     Running     0          41s
+traefik-865bd56545-8wlrl                  1/1     Running     0          41ss
 ```
 
 2\. Add whoami.localhost to /etc/hosts
