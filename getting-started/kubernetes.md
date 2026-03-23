@@ -41,7 +41,7 @@ Verify the cluster is running:
 kubectl get nodes
 ```
 
-Expected output:
+Output is similar to:
 
 ```
 NAME                        STATUS   ROLES                  AGE
@@ -54,13 +54,11 @@ Verify Traefik is running (k3d ships with Traefik by default):
 kubectl get pods -n kube-system | grep traefik
 ```
 
-Expected output:
+Output is similar to:
 
 ```
 traefik-xxx   1/1   Running   0   60s
 ```
-
-***
 
 #### Step 2: Add whoami.localhost to /etc/hosts
 
@@ -113,13 +111,13 @@ Apply it:
 kubectl apply -f 01-whoami-deployment.yaml
 ```
 
-Verify the pod is running:
+Verify the Pod is running:
 
 ```bash
 kubectl get pods
 ```
 
-Expected output:
+Output is similar to:
 
 ```
 NAME                      READY   STATUS    RESTARTS
@@ -186,7 +184,7 @@ Verify the middleware is created:
 kubectl get middleware
 ```
 
-Expected output:
+Output is similar to:
 
 ```
 NAME         AGE
@@ -459,22 +457,6 @@ curl -v -u admin:admin123 http://whoami.localhost
 Should still return `200 OK`.
 
 `httpbin` is running and protected by rate limiting.
-
-***
-
-### Full picture of what's deployed
-
-| File                            | Resource             | Purpose                                          |
-| ------------------------------- | -------------------- | ------------------------------------------------ |
-| `01-whoami-deployment.yaml`     | Deployment + Service | whoami app                                       |
-| `02-basic-auth-secret.yaml`     | Secret               | bcrypt password for basic auth                   |
-| `03-basic-auth-middleware.yaml` | Middleware           | Wires secret to basic auth                       |
-| `04-whoami-ingressroute.yaml`   | IngressRoute         | Routes whoami.localhost → basic-auth middleware  |
-| `05-httpbin-deployment.yaml`    | Deployment + Service | httpbin app                                      |
-| `06-ratelimit-middleware.yaml`  | Middleware           | Rate limit (5 req/s, burst 10)                   |
-| `07-httpbin-ingressroute.yaml`  | IngressRoute         | Routes httpbin.localhost → rate-limit middleware |
-
-***
 
 ### Tear down
 
