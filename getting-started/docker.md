@@ -13,7 +13,7 @@ In this guide learn to :&#x20;
 
 ### Before you begin
 
-Ensure that you have installed:
+Ensure that you have:
 
 * [Docker](https://docs.docker.com/get-docker/) installed
 * [Docker Compose](https://docs.docker.com/compose/install/) installed

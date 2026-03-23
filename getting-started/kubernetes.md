@@ -15,6 +15,8 @@ Learn how to use Traefik's native **IngressRoute CRD** to manage traffic in a Ku
 
 ### Before you begin
 
+Ensure that you have:
+
 * [Docker](https://docs.docker.com/get-docker/) installed
 * [k3d](https://k3d.io/#installation) installed
 * [kubectl](https://kubernetes.io/docs/tasks/tools/) installed
