@@ -4,7 +4,7 @@
 
 ## Getting Started
 
-* [Docker](getting-started/quickstart.md)
+* [Docker](getting-started/docker.md)
 * [Kubernetes](getting-started/kubernetes.md)
 * [Publish your docs](getting-started/publish-your-docs.md)
 
