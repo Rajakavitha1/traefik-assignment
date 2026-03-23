@@ -9,7 +9,9 @@ description: >-
 Learn how to use Traefik's native **IngressRoute CRD** to manage traffic in a Kubernetes cluster:
 
 1. &#x20;Deploy `whoami` protected by basic auth
-2. Add `httpbin` protected by rate limiting
+2. Verify that Traefik adds authentication for the `whoami` service
+3. Add `httpbin` protected by rate limiting
+4. Verify that Traefik sets rate limiting for `httpb`
 
 ### Before you begin
 
@@ -162,7 +164,7 @@ Apply it:
 kubectl apply -f 02-basic-auth-secret.yaml
 ```
 
-Save the following as `03-basic-auth-middleware.yaml`:
+c. Save the following as `03-basic-auth-middleware.yaml`:
 
 ```yaml
 apiVersion: traefik.io/v1alpha1
@@ -237,7 +239,7 @@ NAME                  AGE
 whoami-ingressroute   5s
 ```
 
-#### Test basic auth on whoami
+#### Verify Basic Auth for \`whoami\` service
 
 **No credentials — expect `401 Unauthorized`:**
 
@@ -450,15 +452,15 @@ httpbin-ingressroute   7s
 whoami-ingressroute    3m32s
 ```
 
-5\. Test rate limiting on httpbin
+#### Verify  rate limiting on httpbin
 
-**Single request — expect `200 OK`:**
+1. Send a Single request :
 
 ```bash
 curl -v http://httpbin.localhost/get
 ```
 
-**Burst test — fire 15 rapid requests and watch for `429 Too Many Requests`:**
+2. Burst test  by sending 15 rapid requests and watch for `429`:
 
 ```bash
 for i in $(seq 1 15); do
@@ -467,7 +469,7 @@ for i in $(seq 1 15); do
 done
 ```
 
-Expected output:
+Output is similar to:
 
 ```
 Request 1: 200
