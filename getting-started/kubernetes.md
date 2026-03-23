@@ -11,7 +11,7 @@ Learn how to use Traefik's native **IngressRoute CRD** to manage traffic in a Ku
 1. [Deploy `whoami` protected by basic auth](kubernetes.md#deploy-traefik-and-whoami-with-basic-auth)
 2. [Verify that Traefik adds authentication for the `whoami` service](kubernetes.md#verify-basic-auth-for-whoami-service)
 3. [Add `httpbin` protected by rate limiting](kubernetes.md#deploy-httpbin-with-rate-limiting)
-4. [Verify that Traefik sets rate limiting for `httpb`](kubernetes.md#verify-rate-limiting-on-httpbin)
+4. [Verify that Traefik sets rate limiting for `httpb`](kubernetes.md#verify-rate-limiting-on-httpbin)  service
 
 ### Before you begin
 
