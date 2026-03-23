@@ -217,7 +217,7 @@ Single request — expect `200 OK`:
 curl -v http://httpbin.localhost/get
 ```
 
-Burst test — fire 15 rapid requests and watch for `429`:
+Burst test  by sending 15 rapid requests and watch for `429`:
 
 ```bash
 for i in $(seq 1 15); do
