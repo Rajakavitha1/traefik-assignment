@@ -7,7 +7,9 @@ description: Learn about how the various core concepts of Traefik work together 
 In this guide learn to :&#x20;
 
 1. Deploy Traefik and `whoami` with basic auth
-2. Add `httpbin` with rate limiting to the running stack
+2. Verify that Traefik ensures that `whoami` works with basic auth
+3. Add `httpbin` with rate limiting to the running stack
+4. Verify that Traefik sets rate limiting for `httpbin`  service
 
 ### Before you begin
 
@@ -30,9 +32,7 @@ echo $(htpasswd -nB admin) | sed -e s/\\$/\\$\\$/g
 > * Linux: `sudo apt-get install apache2-utils`
 > * macOS: `brew install httpd`
 
-Copy the output and save it. You need this for the Docker compose file .
-
-Copy the output and save it . You need this when you create the compose file.
+Copy the output and save it. You need this for the `docker-compose.yml` file.
 
 2. Create the Docker Compose file
 
@@ -84,12 +84,11 @@ your-dir-traefik-1  traefik    running   0.0.0.0:80->80/tcp, 0.0.0.0:8080->8080/
 your-dir-whoami-1   whoami     running
 ```
 
-#### Verify that the whoami service works with basic auth
+### Verify that the whoami service works with basic auth
 
-* curl
-* dashboard
+You can confirm that the whoami service works with basic auth using curl or the dashboard
 
-**Confirm using curl**
+#### Confirm using curl
 
 No credentials — expect `401 Unauthorized`:
 
@@ -120,9 +119,9 @@ X-Forwarded-For: 172.18.0.1
 ...
 ```
 
-**Confirm in the Traefik dashboard**
+#### **Confirm in the Traefik dashboard**
 
-1. Open your browser and go to:
+Open your browser and go to:
 
 ```
 http://localhost:8080/dashboard/
@@ -204,12 +203,11 @@ your-dir-whoami-1    whoami     running
 your-dir-httpbin-1   httpbin    running
 ```
 
-#### Verify that rate limiting works on httpbin
+### Verify that rate limiting works on httpbin
 
-* curl
-* dashboard
+You can confirm that the ratelimiting works on `httpbin` using curl or the dashboard.
 
-Confirm using curl
+#### Confirm using curl
 
 Single request — expect `200 OK`:
 
