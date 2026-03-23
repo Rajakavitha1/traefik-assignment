@@ -13,11 +13,13 @@ In this guide learn to :&#x20;
 
 ### Before you begin
 
+Ensure that you have installed:
+
 * [Docker](https://docs.docker.com/get-docker/) installed
 * [Docker Compose](https://docs.docker.com/compose/install/) installed
 * `curl` available in your terminal
 
-### Deploy Traefik whoami with Basic Auth
+### Deploy Traefik and whoami with Basic Auth
 
 1. Generate a Basic Auth password
 

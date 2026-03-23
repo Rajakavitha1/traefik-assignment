@@ -16,6 +16,7 @@ Learn how to use Traefik's native **IngressRoute CRD** to manage traffic in a Ku
 * [Docker](https://docs.docker.com/get-docker/) installed
 * [k3d](https://k3d.io/#installation) installed
 * [kubectl](https://kubernetes.io/docs/tasks/tools/) installed
+* [helm](https://helm.sh/docs/intro/install/) installed
 * `curl` and `htpasswd` available in your terminal
 
 > **Install htpasswd if missing:**
@@ -23,7 +24,7 @@ Learn how to use Traefik's native **IngressRoute CRD** to manage traffic in a Ku
 > * Linux: `sudo apt-get install apache2-utils`
 > * macOS: `brew install httpd`
 
-### Deploy Traefik whoami with Basic Auth
+### Deploy Traefik and whoami with Basic Auth
 
 1. Create a k3d cluster
 
@@ -48,7 +49,7 @@ NAME                        STATUS   ROLES                  AGE
 k3d-traefik-demo-server-0   Ready    control-plane,master   30s
 ```
 
-Verify Traefik is running (k3d ships with Traefik by default):
+Verify Traefik is running . k3d ships with Traefik by default:
 
 ```bash
 kubectl get pods -n kube-system | grep traefik
@@ -191,7 +192,7 @@ NAME         AGE
 basic-auth   5s
 ```
 
-6\. Create the IngressRoute for whoami
+5\. Create the IngressRoute for whoami
 
 Save the following as `04-whoami-ingressroute.yaml`:
 
@@ -234,7 +235,7 @@ NAME                  AGE
 whoami-ingressroute   5s
 ```
 
-#### 7. Test basic auth on whoami
+#### Test basic auth on whoami
 
 **No credentials — expect `401 Unauthorized`:**
 
