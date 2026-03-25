@@ -353,7 +353,7 @@ X-Real-Ip: 10.42.0.1
 
 ```
 
-This confirms, `whoami` is running on k3d and protected by basic auth.
+This confirms, `whoami` is running on k3d and protected by basic auth. For more details about how authentication is implemented in Traefik, see [BasicAuth](https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/basicauth/).
 
 ### Deploy httpbin with Rate Limiting
 
@@ -601,6 +601,8 @@ Request 13: 429
 Request 14: 429
 Request 15: 200
 ```
+
+For more details about how rate limit is implemented in Traefik, see [RateLimit](https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/ratelimit/).
 
 ### Tear down
 

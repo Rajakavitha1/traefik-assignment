@@ -198,6 +198,8 @@ X-Real-Ip: 172.19.0.1
 * Connection #0 to host localhost left intact
 </code></pre>
 
+For more details about how authentication is implemented in Traefik, see [BasicAuth](https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/basicauth/).
+
 #### **Confirm in the Traefik dashboard**
 
 Open your browser and go to:
@@ -214,7 +216,7 @@ This confirms that `whoami` is running and protected by basic auth.
 
 ### Deploy  httpbin with Rate Limiting
 
-Now add `httpbin` to the running stack.
+Now add `httpbin` to the running stack.&#x20;
 
 1\. Update docker-compose.yml
 
@@ -384,6 +386,8 @@ Request 13: 429
 Request 14: 429
 Request 15: 429
 ```
+
+For more details about how rate limit is implemented in Traefik, see [RateLimit](https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/ratelimit/).
 
 #### Confirm in the Traefik dashboard
 
