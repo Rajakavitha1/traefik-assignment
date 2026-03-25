@@ -40,7 +40,7 @@ Common middleware use cases include:
 * **Headers:** add, remove, or rewrite request and response headers
 * **Circuit breaking:** stop forwarding requests to an unhealthy service
 
-To view the complete list of all the middllewares that are available, see [HTTP Middleware Overview](https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/overview/).
+To view a complete list of all the middllewares that are available, see [HTTP Middleware Overview](https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/overview/).
 
 #### Services
 
