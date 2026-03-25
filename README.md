@@ -4,11 +4,11 @@ icon: hand-wave
 
 # Welcome
 
-Modern applications rarely run as a single service. They are made up of many smaller services such as APIs, frontends, backends, and microservices.  Each running in its own container or Pod, and needs to be reachable from the outside world. Traefik helps the request from your browser find its way to the right service.
+Modern applications rarely run as a single service. They are made up of many smaller services such as APIs, frontends, backends, and microservices. Each running in its own container or Pod, and needs to be reachable from the outside world. Traefik helps the request from your browser find its way to the right service.
 
 Traefik is a cloud-native reverse proxy and load balancer designed for dynamic environments like Docker and Kubernetes. Unlike traditional reverse proxies that require manual configuration every time a service changes, Traefik watches your infrastructure and updates its routing configuration automatically.
 
-When you deploy a new container or a new Kubernetes service, Traefik detects it and starts routing traffic to it  without a restart, a config reload, or manual intervention.
+When you deploy a new container or a new Kubernetes service, Traefik detects it and starts routing traffic to it without a restart, a config reload, or manual intervention.
 
 ### Core Concepts
 
@@ -22,13 +22,13 @@ Traefik's architecture is built around four concepts that work together to move 
 
 An entrypoint is the door through which traffic enters Traefik. It defines a port and a protocol such as TCP or UDP that Traefik listens on.
 
-In most setups you will have at least two entrypoints: one for HTTP traffic on port 80, and one for HTTPS traffic on port 443. Entrypoints as the receiving end of your infrastructure  they accept incoming packets but do not yet know what to do with them.&#x20;
+In most setups you will have at least two entrypoints: one for HTTP traffic on port 80, and one for HTTPS traffic on port 443. Entrypoints as the receiving end of your infrastructure they accept incoming packets but do not yet know what to do with them.
 
 #### Routers
 
 A router inspects each incoming request and decides which service should handle it. It does this by evaluating match rules or conditions based on the request's host, path, headers, or method.
 
-For example, a router might say: _if the request host is `whoami.localhost`, send it to the whoami service_. Routers can also attach middlewares, which process the request before it reaches the service.&#x20;
+For example, a router might say: _if the request host is `whoami.localhost`, send it to the whoami service_. Routers can also attach middlewares, which process the request before it reaches the service.
 
 **Middlewares** sit between the router and the service. They intercept the request and can modify it, reject it, or enrich it before it is forwarded.
 
@@ -39,6 +39,8 @@ Common middleware use cases include:
 * **Redirects:** HTTP to HTTPS, trailing slash handling
 * **Headers:** add, remove, or rewrite request and response headers
 * **Circuit breaking:** stop forwarding requests to an unhealthy service
+
+To view the complete list of all the middllewares that are available, see [HTTP Middleware Overview](https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/overview/).
 
 #### Services
 
